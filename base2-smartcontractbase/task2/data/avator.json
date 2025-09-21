@@ -1,0 +1,15 @@
+{
+  "name": "My NFT's avator",
+  "description": "My NFT's avator description",
+  "image": "ipfs://my avator image hash", // https://pinata.cloud/
+  "attributes": [
+    {
+      "trait_type": "type",
+      "value": "digital art"
+    },
+    {
+      "trait_type": "create time",
+      "value": "2023-10-01"
+    }
+  ]
+}

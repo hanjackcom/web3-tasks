@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"task1/Rome2Int.sol": "Rome2Int"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"task1/Rome2Int.sol": {
+			"keccak256": "0x3ab3a88e8c730b5b3fb4ba8f4a1b251b678369dd1d91cbc6e5b5a3c5ac71b708",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://e0129cd9b13fab42364620a824d6f9dcbe9411feb33a1d817cbb12e0cf8c8c30",
+				"dweb:/ipfs/QmbvhGnw8CwSb5rdAKt6WUq2ChAeFdaG6amjTFSyuHLP2u"
+			]
+		}
+	},
+	"version": 1
+}

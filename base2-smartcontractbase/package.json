@@ -1,0 +1,16 @@
+{
+  "name": "base2-smartcontractbase",
+  "version": "1.0.0",
+  "description": "git clone https://github.com/hanjackcom/web3-tasks.git\r cd web3-tasks/base2-smartcontractbase\r npm init -y",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "hardhat": "^3.0.6"
+  }
+}
