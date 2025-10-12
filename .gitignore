@@ -31,3 +31,5 @@ go.work.sum
 # .idea/
 # .vscode/
 base2-smartcontractbase/node_modules
+
+advanced1-dapp-backend/task1/gencontractcode/.env

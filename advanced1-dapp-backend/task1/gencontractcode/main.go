@@ -9,29 +9,39 @@ import (
 	"os"
 	"time"
 
-	"example.com/ethclient-demo/14-task2/counter"
+	"gencontractcode/counter"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	ctx := context.Background()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+		return
+	}
 
-	rpcURL := mustGetenv("SEPOLIA_RPC")
-	privHex := mustGetenv("PRIV_KEY_HEX")
+	rpcURL := os.Getenv("SEPOLIA_RPC")
+	privHex := os.Getenv("PRIV_KEY_HEX")
 	chainIDStr := os.Getenv("CHAIN_ID")
 	if chainIDStr == "" {
 		chainIDStr = "11155111" // Sepolia
 	}
+	log.Printf("rpcURL: %s\n", rpcURL)
+	log.Printf("privHex: %s\n", privHex)
+	log.Printf("chainID: %s\n", chainIDStr)
+	// parse chainID
 	chainID, _ := new(big.Int).SetString(chainIDStr, 10)
 
 	// 1. connect Sepolia
+	ctx := context.Background()
 	client, err := ethclient.DialContext(ctx, rpcURL)
 	if err != nil {
-		log.Fatalf("dial rpc: %v", err)
+		log.Fatalf("dial rpc err: %v", err)
 	}
 	defer client.Close()
 
