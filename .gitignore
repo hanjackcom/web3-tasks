@@ -32,4 +32,5 @@ go.work.sum
 # .vscode/
 base2-smartcontractbase/node_modules
 
+advanced1-dapp-backend/task1/experienceblock/.env
 advanced1-dapp-backend/task1/gencontractcode/.env

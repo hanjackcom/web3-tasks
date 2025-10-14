@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"solana-go/utils"
+	"experiencesolanago/utils"
 	"time"
 
 	"github.com/gagliardetto/solana-go"
@@ -24,15 +24,16 @@ func main() {
 	// 1. get latest blockhash
 	recentBlockhash, lastValidBlockHeight, err := utils.GetRecentBlockhash(rpcClient)
 	if err != nil {
-		log.Fatalf("get latest block hash failed: %v", err)
+		log.Fatalf("get latest block hash failed: %v\n", err)
 	}
 	fmt.Printf("latest block hash is: %s\n", recentBlockhash)
 	fmt.Printf("last valid block height is: %d\n", lastValidBlockHeight)
 
 	// replace your actual private key
-	fromWallet := utils.GetAccountFromPrivateKey("wallet-keypair.json")
-	toWallet2 := utils.GetAccountFromPrivateKey("wallet-keypair2.json")
+	fromWallet := utils.GetAccountFromPrivateKey("/root/.config/solana/wallet-keypair.json") // pubkey: 8BSvbQ5uMdQDYFyP7FupCA5RataTQegZXMpJFfrM3TEy
+	toWallet2 := utils.GetAccountFromPrivateKey("/root/.config/solana/wallet-keypair2.json") // pubkey: A6mAa1G8dYvyaZXamQ26s4mYCtFqyPrvyBfy8sHRV6XZ
 
+	fmt.Printf("Account 1: %s\n", fromWallet.PublicKey().String())
 	fmt.Printf("Account 2: %s\n", toWallet2.PublicKey().String())
 	// 2. get balance
 	walletAddress := solana.MustPublicKeyFromBase58(fromWallet.PublicKey().String()) // replace your actual address
@@ -40,7 +41,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("get balance failed: %v", err)
 	}
-	fmt.Printf("balance is: %f SOL\n", balance)
+	fmt.Printf("balance is: %v SOL\n", balance.Value)
 
 	//toWallet := solana.MustPublicKeyFromBase58("Dukdx2R3wMvnAvriU5HnLDFjqgjHDKCqLnux2opC85PT") // replace your actual address
 
@@ -53,7 +54,7 @@ func main() {
 		rpc.CommitmentConfirmed,   // using confirmed
 	)
 	if err != nil {
-		log.Fatalf("Airdrop failed: %v", err)
+		log.Fatalf("Airdrop failed: %v\n", err)
 	}
 	fmt.Printf("Airdrop transaction signature: %s\n", airdropSig)
 	// wait for a short while to ensure airdrop is processed
@@ -65,24 +66,24 @@ func main() {
 		rpc.CommitmentConfirmed,
 	)
 	if err != nil {
-		log.Fatalf("Failed to get recent blockhash: %v", err)
+		log.Fatalf("Failed to get recent blockhash: %v\n", err)
 	}
 	blockhash := recent.Value.Blockhash
-	lastlockHeight := recent.Value.LastValidBlockHeight
+	lastBlockHeight := recent.Value.LastValidBlockHeight
 
 	// check current block height valid
 	currentHeight, err := rpcClient.GetBlockHeight(context.TODO(), rpc.CommitmentConfirmed)
 	if err != nil {
-		log.Fatalf("Failed to get current block height: %v", err)
+		log.Fatalf("Failed to get current block height: %v\n", err)
 	}
-	if currentHeight > lastlockHeight {
-		log.Fatalf("Blockhash expired. Current height: %d, Last valid height: %d", currentHeight, lastlockHeight)
+	if currentHeight > lastBlockHeight {
+		log.Fatalf("Blockhash expired. Current height: %d, Last valid height: %d\n", currentHeight, lastBlockHeight)
 	}
 
 	// 3. create and send transfer
 	signature, err := utils.TransferSOL(rpcClient, wsClient, fromWallet, toWallet2.PublicKey(), amount, blockhash)
 	if err != nil {
-		log.Fatalf("transfer failed: %v", err)
+		log.Fatalf("transfer failed: %v\n", err)
 	}
 	fmt.Printf("transfer successfully! signature is: %s\n", signature)
 
@@ -92,7 +93,7 @@ func main() {
 		"",
 	)
 	if err != nil {
-		log.Fatalf("subscribe transaction event failed: %v", err)
+		log.Fatalf("subscribe transaction event failed: %v\n", err)
 	}
 	defer sub.Unsubscribe()
 
@@ -129,6 +130,6 @@ func main() {
 	//fmt.Printf("token swap successfully! signature is: %s\n", swapSignature)
 	//
 	// wait for user input
-	//fmt.Println("input Enter, and exit...")
-	//fmt.Scanln()
+	fmt.Println("input Enter, and exit...")
+	fmt.Scanln()
 }

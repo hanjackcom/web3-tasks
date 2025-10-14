@@ -18,7 +18,11 @@ solcjs --abi contract/Counter.sol
 
 abigen --bin=contract_Counter_sol_Counter.bin --abi=contract_Counter_sol_Counter.abi --pkg=counter --out=counter/counter.go
 
-# 也可以用npm install -g solc-cli 安装solc，用solc --abi Counter.sol -o build 生成ABI文件。
+# yet using: 
+# npm install -g solc-cli 
+# install solc, and using:
+# solc --abi Counter.sol -o build 
+# generate ABI file.
 
 ```
 
@@ -31,7 +35,7 @@ go get -u github.com/ethereum/go-ethereum
 cd $GOPATH/pkg/mod/github.com/ethereum/go-ethereum@v1.16.4
 make
 make devtools
-# 或者直接：
+# or directly：
 go install github.com/ethereum/go-ethereum/cmd/abigen@latest
 
 which abigen
@@ -52,4 +56,10 @@ abigen --bin=contract_Counter_sol_Counter.bin --abi=contract_Counter_sol_Counter
 3.2 call contract's method, e.g. increment.
 
 3.3 output result.
+
+```shell
+go mod tidy
+go build
+./gencontractcode
+```
 

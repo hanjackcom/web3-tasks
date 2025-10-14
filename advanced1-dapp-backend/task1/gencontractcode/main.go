@@ -67,8 +67,7 @@ func main() {
 	// auth.GasFeeCap / GasTipCap / GasLimit
 
 	// 4) deploy contract
-	initValue := big.NewInt(42)
-	contractAddr, deployTx, c, err := counter.DeployCounter(auth, client, initValue)
+	contractAddr, deployTx, c, err := counter.DeployCounter(auth, client)
 	if err != nil {
 		log.Fatalf("deploy: %v", err)
 	}
@@ -79,12 +78,12 @@ func main() {
 	waitMined(ctx, client, deployTx.Hash())
 	fmt.Printf("Deployed at: %s\n", contractAddr.Hex())
 
-	// 5) get current 
-	cur, err := c.Current(&bind.CallOpts{Context: ctx})
+	// 5) get count 
+	cur, err := c.GetCount(&bind.CallOpts{Context: ctx})
 	if err != nil {
-		log.Fatalf("read current(): %v", err)
+		log.Fatalf("read getCount(): %v", err)
 	}
-	fmt.Printf("current(): %s\n", cur.String())
+	fmt.Printf("getCount(): %s\n", cur.String())
 
 	// 6) call increment
 	tx, err := c.Increment(auth)
@@ -94,12 +93,12 @@ func main() {
 	fmt.Printf("increment() tx: %s\n", tx.Hash().Hex())
 	waitMined(ctx, client, tx.Hash())
 
-	// 7) get current again
-	cur2, err := c.Current(&bind.CallOpts{Context: ctx})
+	// 7) get count again
+	cur2, err := c.GetCount(&bind.CallOpts{Context: ctx})
 	if err != nil {
-		log.Fatalf("read current() after increment: %v", err)
+		log.Fatalf("read getCount() after increment: %v", err)
 	}
-	fmt.Printf("current() after increment: %s\n", cur2.String())
+	fmt.Printf("getCount() after increment: %s\n", cur2.String())
 }
 
 func waitMined(ctx context.Context, c *ethclient.Client, txHash common.Hash) {
@@ -116,10 +115,4 @@ func waitMined(ctx context.Context, c *ethclient.Client, txHash common.Hash) {
 		time.Sleep(2 * time.Second)
 	}
 }
-func mustGetenv(k string) string {
-	v := os.Getenv(k)
-	if v == "" {
-		log.Fatalf("missing env: %s", k)
-	}
-	return v
-}
+
