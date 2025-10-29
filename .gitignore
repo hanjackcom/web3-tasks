@@ -34,3 +34,18 @@ base2-smartcontractbase/node_modules
 
 advanced1-dapp-backend/task1/experienceblock/.env
 advanced1-dapp-backend/task1/gencontractcode/.env
+advanced2-contract-dev/task1/meme-experience/.env
+advanced2-contract-dev/task2/metanode-stake/.env
+
+advanced2-contract-dev/task1/meme-experience/node_modules
+advanced2-contract-dev/task2/metanode-stake/node_modules
+advanced2-contract-dev/task3/foundry-experience/out
+
+advanced2-contract-dev/task4/solana-demo/spl-token-program/node_modules
+advanced2-contract-dev/task4/solana-demo/spl-token-program/.anchor
+advanced2-contract-dev/task4/solana-demo/spl-token-program/target
+advanced2-contract-dev/task4/solana-demo/spl-token-program/test-ledger
+advanced2-contract-dev/task4/substrate-demo/target
+
+
+

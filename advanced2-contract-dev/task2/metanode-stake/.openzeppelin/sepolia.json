@@ -1,0 +1,374 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0x4e37a0c73bf21b24029fC73e56efE7166A930345",
+      "txHash": "0x133251b25cb336d115a82ebc9197677b5dbae23bb594b79aa1989fc2c8d2e277",
+      "kind": "uups"
+    },
+    {
+      "address": "0x89cE7d3CcCD75c47A9535B8c4cCE7a8386cC2B36",
+      "txHash": "0xec1870e40759644e74f669418629c2484b4abcef446ffe78ee9dd48c275da687",
+      "kind": "uups"
+    },
+    {
+      "address": "0x46525979efeDdB5E88CFb1f5Cf3B14D5E6F1cFdC",
+      "txHash": "0x0f2e9b4caac83118db84613558b876fba14f56d00848a26ee03a46b0b87a1972",
+      "kind": "uups"
+    },
+    {
+      "address": "0x995e38A18Dd95A2919314fb7Fea972cAa2A7a6A4",
+      "txHash": "0xa0f9f7786db751dc1396c0f78a639346d488f85c0defe0aece8eb635cfb2feac",
+      "kind": "uups"
+    },
+    {
+      "address": "0x36ABDD79b8e25Eb6a3B05a58cE804E4A26667E7F",
+      "txHash": "0x28dffb8b2ad0f768afaee9a9e140eaa07ea5aafbe6a1621a3bc12673d160511b",
+      "kind": "uups"
+    },
+    {
+      "address": "0xd4bA1A1909a0364AF52820630dBC712bbA0fDb74",
+      "txHash": "0xdcd32c07421b5167b432bfd1bc3f019895f76b5b426945dee4c9bd59ef391680",
+      "kind": "uups"
+    },
+    {
+      "address": "0xf9E8D2E0372b2F758772bfe54Bb05753d2B55c87",
+      "txHash": "0x4f628c387f3b9266a0ed1684a5be65662537d80e59f2566c51f940b6baaea822",
+      "kind": "uups"
+    },
+    {
+      "address": "0x4027A114f149E02a4198A8e162741C26bF8D2F2e",
+      "txHash": "0xe6be52fc6d9a43e1c5e6c63d0520951cd3936505b41fe6f6ddd86084e7d2a8de",
+      "kind": "uups"
+    }
+  ],
+  "impls": {
+    "a7fc7e7b6576b2f2a39341299a644d5ace78c4e0371a7617cdced07d6038b7b8": {
+      "address": "0x0d1F6F06293eE23e14e62eb6F84f319213832862",
+      "txHash": "0x7f74cc9afa8befd5cdcee69f4910431f3beda9ada99e2f59c35676425644d603",
+      "layout": {
+        "solcVersion": "0.8.28",
+        "storage": [
+          {
+            "label": "pools",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_array(t_struct(Pool)6730_storage)dyn_storage",
+            "contract": "MetaNodeStake",
+            "src": "contracts/MetaNodeStake.sol:55"
+          },
+          {
+            "label": "startBlock",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "MetaNodeStake",
+            "src": "contracts/MetaNodeStake.sol:57"
+          },
+          {
+            "label": "endBlock",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "MetaNodeStake",
+            "src": "contracts/MetaNodeStake.sol:58"
+          },
+          {
+            "label": "metaNodePerBlock",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "MetaNodeStake",
+            "src": "contracts/MetaNodeStake.sol:59"
+          },
+          {
+            "label": "withdrawPaused",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_bool",
+            "contract": "MetaNodeStake",
+            "src": "contracts/MetaNodeStake.sol:61"
+          },
+          {
+            "label": "claimPaused",
+            "offset": 1,
+            "slot": "4",
+            "type": "t_bool",
+            "contract": "MetaNodeStake",
+            "src": "contracts/MetaNodeStake.sol:62"
+          },
+          {
+            "label": "totalWeight",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "MetaNodeStake",
+            "src": "contracts/MetaNodeStake.sol:64"
+          },
+          {
+            "label": "MetaNode",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_contract(IERC20)2298",
+            "contract": "MetaNodeStake",
+            "src": "contracts/MetaNodeStake.sol:66"
+          },
+          {
+            "label": "users",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(User)6746_storage))",
+            "contract": "MetaNodeStake",
+            "src": "contracts/MetaNodeStake.sol:68"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)26_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AccessControlStorage)36_storage": {
+            "label": "struct AccessControlUpgradeable.AccessControlStorage",
+            "members": [
+              {
+                "label": "_roles",
+                "type": "t_mapping(t_bytes32,t_struct(RoleData)26_storage)",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(InitializableStorage)147_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(PausableStorage)298_storage": {
+            "label": "struct PausableUpgradeable.PausableStorage",
+            "members": [
+              {
+                "label": "_paused",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)26_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "hasRole",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_struct(Pool)6730_storage)dyn_storage": {
+            "label": "struct MetaNodeStake.Pool[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(UnstakeRequest)6735_storage)dyn_storage": {
+            "label": "struct MetaNodeStake.UnstakeRequest[]",
+            "numberOfBytes": "32"
+          },
+          "t_contract(IERC20)2298": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_struct(User)6746_storage)": {
+            "label": "mapping(address => struct MetaNodeStake.User)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_struct(User)6746_storage))": {
+            "label": "mapping(uint256 => mapping(address => struct MetaNodeStake.User))",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Pool)6730_storage": {
+            "label": "struct MetaNodeStake.Pool",
+            "members": [
+              {
+                "label": "poolAddress",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "poolWeight",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "minDepositAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "lastRewardBlock",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "accMetaNodePerST",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "stTokenAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "unstakeLockedBlocks",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              }
+            ],
+            "numberOfBytes": "224"
+          },
+          "t_struct(UnstakeRequest)6735_storage": {
+            "label": "struct MetaNodeStake.UnstakeRequest",
+            "members": [
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "unlockBlock",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(User)6746_storage": {
+            "label": "struct MetaNodeStake.User",
+            "members": [
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "finishedMetaNode",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "pendingMetaNode",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "requests",
+                "type": "t_array(t_struct(UnstakeRequest)6735_storage)dyn_storage",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.AccessControl": [
+            {
+              "contract": "AccessControlUpgradeable",
+              "label": "_roles",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)26_storage)",
+              "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:62",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Pausable": [
+            {
+              "contract": "PausableUpgradeable",
+              "label": "_paused",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol:21",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

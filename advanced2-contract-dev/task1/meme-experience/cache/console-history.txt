@@ -1,0 +1,42 @@
+.exit
+await pool.swapETHForToken({ value: ethers.parseEther("0.1") });
+await pool.addLiquidity(10000000, { value: ethers.parseEther("1") });
+await meme.approve("0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9", 10000000);
+await meme.approve("0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9", 10000000));
+await meme.balanceOf(to);
+await meme.balanceOf(from);
+await meme.transfer(to, 20000000);
+await meme.balanceOf(from);
+await meme.getTotalSupply();
+await meme.transfer(from, 20000000);
+await meme.transfer(from, ethers.parseUnits("100", 18));
+await meme.getTotalSupply();
+await meme.balanceOf(to);
+await meme.balanceOf(from);
+const to = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+const from = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
+const pool = await ethers.getContractAt("LiquidityPool", "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9");
+const meme = await ethers.getContractAt("Meme", "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0");
+.exit
+?
+help
+exit()
+exit
+quit()
+const meme = await ethers.getContractAt("Meme", "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0");
+await liquidityPool.addLiquidity(ethers.parseUnits("100", 18), {value: ethers.parseEther("1")});
+await meme.approve("0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9", ethers.parseUnits("1000", 18));
+await liquidityPool.addLiquidity(ethers.parseUnits("100", 18), {value: ethers.parseEther("1")});
+await meme.transfer("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", ethers.parseUnits("1", 18));
+await liquidityPool.addLiquidity(ethers.parseUnits("100", 18), {value: ethers.parseEther("1")});
+await ethers.provider.getBalance("0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266");
+await ethers.getBalances("0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266");
+await ethers.getBalance("0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266");
+await liquidityPool.addLiquidity(ethers.parseUnits("100", 18), {value: ethers.parseEther("1")});
+await pool.addLiquidity(ethers.parseUnits("100", 18), {value: ethers.parseEther("1")});
+await meme.transfer("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", ethers.parseUnits("1", 18));
+await meme.transfer("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", ethers.parseUnits("10", 18));
+await meme.transfer("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", ethers.parseUnits("100", 18));
+const liquidityPool = await ethers.getContractAt("LiquidityPool", "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9");
+const = await ethers.getContractAt("LiquidityPool", "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9");
+const meme = await ethers.getContractAt("Meme", "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0");

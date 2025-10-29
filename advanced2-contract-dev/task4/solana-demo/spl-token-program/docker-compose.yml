@@ -1,0 +1,59 @@
+
+version: '3.8'
+
+services:
+  spl-token-program:
+    build: .
+    ports:
+      - "3000:3000" # frontend port
+      - "8899:8899" # solana rpc port
+    environment:
+      - SOLANA_NETWORK=localnet
+      - RPC_URL=http://localhost:8899
+      - FRONTEND_PORT=3000
+      - DEV_MODE=true
+    volumes:
+      - ./app:/app/app:ro  # mount frontend file, readonly
+      - ./scripts:/app/scripts:ro  # mount script file, readonly
+      - solana_data:/root/.config/solana  # perisistent solana config
+      - cargo_cache:/root/.cargo  # cache cargo dependencies
+    networks:
+      - solana-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # optional: standalone solana validator
+  solana-validator:
+    image: solanalabs/solana:v1.18.0
+    command: >
+      bash -c "
+        solana-test-validator
+        --reset
+        --rpc-bind-address 0.0.0.0
+        --rpc-port 8899
+        --log
+      "
+    ports:
+      - "8900:8899" # inflect ports ensure that no conflict
+    volumes:
+      - validator_data:/root/.config/solana
+    networks:
+      - solana-network
+    profiles:
+      - standalone # launch method: docker-compose --profile standalone up
+
+volumes:
+  solana_data:
+    driver: local
+  cargo_cache:
+    driver: local
+  validator_data:
+    driver: local
+
+networks:
+  solana-network:
+    driver: bridge
