@@ -1,141 +1,195 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-interface IERC20 {
-    function transfer(address to, uint256 amount) external returns (bool);
-    function transferFrom(address from, address to, uint256 amount) external returns (bool);
-    function balanceOf(address account) external view returns (uint256);
-}
+import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
+import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract LiquidityPool {
-    address public _owner;
-    address public _memeToken;
-    uint256 public _ethReserve;
-    uint256 public _tokenReserve;
-    mapping(address => uint256) public _liquidityShares;
-    uint256 public _totalShares;
+contract LiquidityPool is Ownable {
+    using SafeERC20 for IERC20;
 
-    event AddLiquidity(address indexed provider, uint256 ethAmount, uint256 tokenAmount, uint256 shares);
-    event RemoveLiquidity(address indexed provider, uint256 ethAmount, uint256 tokenAmount, uint256 shares);
-    event Swap(address indexed swapper, uint256 ethIn, uint256 tokenOut, uint256 tokenIn, uint256 ethOut);
+    IUniswapV2Router02 public immutable router;
+    IUniswapV2Factory public immutable factory;
+    address public immutable WETH;
 
-    constructor(address memeToken) {
-        _owner = msg.sender;
-        _memeToken = memeToken;
+    mapping(address => address) public tokenToPair;
+
+    event LiquidityAdded(
+        address indexed token,
+        address indexed pair,
+        uint256 ethAmount,
+        uint256 tokenAmount,
+        uint256 liquidity
+    );
+
+    event LiquidityRemoved(
+        address indexed token,
+        address indexed pair,
+        uint256 ethAmount,
+        uint256 tokenAmount,
+        uint256 liquidity
+    );
+
+    event ETHForTokensSwapped(
+        address indexed token,
+        uint256 ethAmount,
+        uint256 tokenAmount,
+        address indexed recipient
+    );
+
+    event TokensForETHSwapped(
+        address indexed token,
+        uint256 tokenAmount,
+        uint256 ethAmount,
+        address indexed recipient
+    );
+
+    constructor(address router_) Ownable(msg.sender) {
+        require(_router != address(0), "Invalid router address");
+        router = IUniswapV2Router02(router_);
+        factory = IUniswapV2Factory(router.factory());
+        WETH = router.WETH();
     }
 
-    function addLiquidity(uint256 tokenAmount) external payable {
-        require(msg.value > 0 && tokenAmount > 0, "Invalid amounts");
+    function addLiquidityETH(
+        address token,
+        uint256 tokenAmount,
+        uint256 minLiquidity,
+        uint256 deadline
+    ) external payable returns (uint256 liquidity) {
+        require(token != address(0) && token != WETH, "Invalid token");
+        require(tokenAmount > 0 && msg.value > 0, "Amounts must be positive");
 
-        uint256 shares;
-        uint ethAmount = msg.value;
+        IERC20(token).safeApprove(address(router), tokenAmount);
 
-        if (_totalShares == 0) {
-            // add liquidity firstly
-            shares = msg.value;
-        } else {
-            uint256 ethShare = (ethAmount * _totalShares) / _ethReserve;
-            uint256 tokenShare = (tokenAmount * _totalShares) / _tokenReserve;
-            shares = ethShare < tokenShare ? ethShare : tokenShare;
+        (uint256 amountETH, uint256 amountToken, uint256 liquidityOut) = router
+            .addLiquidityETH{value: msg.value}(
+                token,
+                tokenAmount,
+                0,
+                0,
+                msg.sender,
+                deadline
+            );
+
+        require(liquidityOut >= minLiquidity, "Insufficient liquidity received");
+
+        address pair = factory.getPair(token, WETH);
+        if (tokenToPair[token] == address(0)) {
+            tokenToPair[token] = pair;
         }
 
-        IERC20 meme = IERC20(_memeToken);
-        require(meme.transferFrom(msg.sender, address(this), tokenAmount), "Token transfer failed");
-
-        _ethReserve += ethAmount;
-        _tokenReserve += tokenAmount;
-        _liquidityShares[msg.sender] += shares;
-        _totalShares += shares;
-
-        emit AddLiquidity(msg.sender, ethAmount, tokenAmount, shares);
+        emit LiquidityAdded(token, pair, amountETH, amountToken, liquidityOut);
+        return liquidityOut;
     }
 
-    function removeLiquidity(uint256 shares) external {
-        require(shares > 0 && _liquidityShares[msg.sender] >= shares, "Invalid shares");
+    function removeLiquidityETH(
+        address token,
+        uint256 liquidity,
+        uint256 minETH,
+        uint256 minToken,
+        uint256 deadline
+    ) external returns (uint256 ethAmount, uint256 tokenAmount) {
+        require(token != address(0) && token != WETH, "Invalid token");
+        require(liquidity > 0, "Liquidity must be positive");
 
-        uint256 ethAmount = (shares *_ethReserve) / _totalShares;
-        uint256 tokenAmount = (shares *_tokenReserve) / _totalShares;
+        address pair = tokenToPair[token];
+        require(pair != address(0), "Pair not found");
 
-        _ethReserve -= ethAmount;
-        _tokenReserve -= tokenAmount;
-        _liquidityShares[msg.sender] -= shares;
-        _totalShares -= shares;
+        IERC20(pair).safeApprove(address(router), liquidity);
 
-        payable(msg.sender).transfer(ethAmount);
-        IERC20 meme = IERC20(_memeToken);
-        meme.transfer(msg.sender, tokenAmount);
+        (uint256 amountETH, uint256 amountToken) = router.removeLiquidityETH(
+            token,
+            liquidity,
+            minETH,
+            minToken,
+            msg.sender,
+            deadline
+        );
 
-        emit RemoveLiquidity(msg.sender, ethAmount, tokenAmount, shares);
+        require(amountETH >= minETH && amountToken >= minToken, "Insufficient output");
+
+        emit LiquidityRemoved(token, pair, amountETH, amountToken, liquidity);
+        return (amountETH, amountToken);
     }
 
-    // eth => token
-    function swapETHForToken() external payable {
-        require(msg.value > 0, "Invalid ETH amount");
-        require(_ethReserve > 0 && _tokenReserve > 0, "Insufficient liquidity");
+    function swapETHForTokens(
+        address token,
+        uint256 minTokensOut,
+        uint256 deadline
+    ) external payable returns (uint256 tokensOut) {
+        require(token != address(0) && token != WETH, "Invalid token");
+        require(msg.value > 0, "ETH amount must be positive");
 
-        uint256 ethIn = msg.value;
-        // x*y=k  0.3% fee
-        uint256 ethInWithFee = (ethIn * 997) / 1000;
-        uint256 tokenOut = (_tokenReserve * ethInWithFee) / (_ethReserve + ethInWithFee);
+        address[] memory path = new address[](2);
+        path[0] = WETH;
+        path[1] = token;
 
-        require(tokenOut > 0 && tokenOut < _tokenReserve, "Invalid swap");
+        uint256[] memory amounts = router.swapExactETHForTokens{value: msg.value}(
+            minTokensOut,
+            path,
+            msg.sender,
+            deadline
+        );
 
-        _ethReserve += ethIn;
-        _tokenReserve -= tokenOut;
+        tokensOut = amounts[1];
+        require(tokensOut >= minTokensOut, "Insufficient tokens received");
 
-        IERC20 meme = IERC20(_memeToken);
-        meme.transfer(msg.sender, tokenOut);
-
-        emit Swap(msg.sender, ethIn, tokenOut, 0, 0);
+        emit ETHForTokensSwapped(token, msg.value, tokensOut, msg.sender);
+        return tokensOut;
     }
 
-    // token => eth
-    function swapTokenForETH(uint256 tokenIn) external {
-        require(tokenIn > 0, "Invalid token amount");
-        require(_ethReserve > 0 && _tokenReserve > 0, "No liquidity");
+    function swapTokensForETH(
+        address token,
+        uint256 tokenAmount,
+        uint256 minEthOut,
+        uint256 deadline
+    ) external returns (uint256 ethOut) {
+        require(token != address(0) && token != WETH, "Invalid token");
+        require(tokenAmount > 0, "Token amount must be positive");
 
-        // x*y=k   0.3% fee
-        uint256 tokenInWithFee = (tokenIn * 997) / 1000;
-        uint256 ethOut = (_ethReserve * tokenInWithFee) / (_tokenReserve + tokenInWithFee);
+        IERC20(token).safeApprove(address(router), tokenAmount);
 
-        require(ethOut > 0 && ethOut < _ethReserve, "Invalid swap");
+        address[] memory path = new address[](2);
+        path[0] = token;
+        path[1] = WETH;
 
-        IERC20 meme = IERC20(_memeToken);
-        meme.transferFrom(msg.sender, address(this), tokenIn);
+        uint256[] memory amounts = router.swapExactTokensForETH(
+            tokenAmount,
+            minEthOut,
+            path,
+            msg.sender,
+            deadline
+        );
 
-        _tokenReserve += tokenIn;
-        _ethReserve -= ethOut;
+        ethOut = amounts[1];
+        require(ethOut >= minEthOut, "Insufficient ETH received");
 
-        payable(msg.sender).transfer(ethOut);
-
-        emit Swap(msg.sender, 0, 0, tokenIn, ethOut);
+        emit TokensForETHSwapped(token, tokenAmount, ethOut, msg.sender);
+        return ethOut;
     }
 
-    function getSwapPrice(uint256 amountIn, bool isEthToToken) external view returns (uint256 amountOut) {
-        require(amountIn > 0, "Invalid amount");
+    function getPairAddress(address token) external view returns (address) {
+        return tokenToPair[token] != address(0)
+            ? tokenToPair[token]
+            : factory.getPair(token, WETH);
+    }
 
-        if (_ethReserve == 0 || _tokenReserve == 0) {
-            return 0;
+    function emergencyWithdrawETH() external onlyOwner {
+        uint256 balance = address(this).balance;
+        if (balance > 0) {
+            payable(owner()).transfer(balance);
         }
+    }
 
-        if (isEthToToken) {
-            uint256 ethInWithFee = (amountIn * 997) / 1000;
-            amountOut = (_tokenReserve * ethInWithFee) / (_ethReserve + ethInWithFee);
-        } else {
-            uint256 tokenInWithFee = (amountIn * 997) / 1000;
-            amountOut = (_ethReserve * tokenInWithFee) / (_tokenReserve + tokenInWithFee);
+    function emergencyWithdrawToken(address token) external onlyOwner {
+        uint256 balance = IERC20(token).balanceOf(address(this));
+        if (balance > 0) {
+            IERC20(token).safeTransfer(owner(), balance);
         }
     }
 
-    function getPoolInfo() external view returns (uint256, uint256, uint256) {
-        return (_ethReserve, _tokenReserve, _totalShares);
-    }
-
-    function getMemeToken() external view returns (address) {
-        return _memeToken;
-    }
-
-    function getOwner() external view returns (address) {
-        return _owner;
-    }
+    receive() external payable {}
 }

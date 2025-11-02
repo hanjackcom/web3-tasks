@@ -59,6 +59,8 @@ Project build steps:
 mkdir metanode-stake && cd metanode-stake
 npm init
 npm install --save-dev hardhat
+npm install --save-dev solidity-coverage
+npm install --save-dev hardhat-gas-reporter
 npx hardhat init
 
 npm install --save-dev dotenv
@@ -77,6 +79,16 @@ npx hardhat deploy --network localhost
 
 npx hardhat test
 REPORT_GAS=true npx hardhat test
+
+### use coverage
+npx hardhat clean
+npx hardhat compile
+npx hardhat coverage
+
+### 
+# https://coinmarketcap.com/
+npx hardhat test
+
 
 ```
 

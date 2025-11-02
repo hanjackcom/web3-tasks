@@ -4,7 +4,7 @@
 const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 
 module.exports = buildModule("MemeModule", (m) => {
-  const meme = m.contract("Meme", ["hanjackcom", "HJC", 18, 100000000]);
+  const meme = m.contract("Meme", ["hanjackcom", "HJC", 100000000]);
 
   return { meme };
 });

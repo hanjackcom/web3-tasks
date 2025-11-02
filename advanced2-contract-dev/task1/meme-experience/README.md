@@ -62,7 +62,12 @@ meme-experience
 mkdir meme-experience && cd meme-experience
 npm init
 npm install --save-dev hardhat@v2
+npm install --save-dev solidity-coverage
+npm install --save-dev hardhat-gas-reporter
 npx hardhat init
+
+npm install @openzeppelin/contracts
+npm install @uniswap/v2-periphery
 
 # 2. fix your code, .env, hardhat.config.js for network enviroment.
 npm install --save-dev dotenv
@@ -93,6 +98,14 @@ REPORT_GAS=true npx hardhat test
 
 # references: https://v2.hardhat.org/hardhat-runner/docs/getting-started#overview
 
+### use coverage
+npx hardhat clean
+npx hardhat compile
+npx hardhat coverage
+
+### 
+# https://coinmarketcap.com/
+npx hardhat test
 
 ```
 

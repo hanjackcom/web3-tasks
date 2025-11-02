@@ -2,6 +2,8 @@ const { task } = require("hardhat/config");
 
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
+require("solidity-coverage");
+require("hardhat-gas-reporter");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -14,6 +16,16 @@ module.exports = {
       url: `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
       accounts: [process.env.PK]
     }
+  },
+  gasReporter: {
+    currency: 'ETH',
+    // L1: "ethereum",
+    // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+    etherscan: process.env.ETHERSCAN_API_KEY,
+    // gasPriceApi: "https://api.etherscan.io/api?module=proxy&action=eth_gasPrice",
+    outputFile: "gas-report.txt",
+    enabled: (process.env.REPORT_GAS) ? true : false,
+    // offline: true,
   }
 };
 
